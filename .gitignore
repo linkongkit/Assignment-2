@@ -58,6 +58,9 @@ coverage.xml
 .env
 .env.*
 
+# Allow example env file to be committed
+!.env.example
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
