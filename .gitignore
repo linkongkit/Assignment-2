@@ -80,8 +80,10 @@ crawled-page-*.html
 crawled-page-*.htm
 tides.csv
 
-# SVG output
+# SVG output (ignore general SVGs but allow project-generated summary SVGs)
 *.svg
+!7.svg
+!monthly_wind_rain.svg
 
 # Ignore personal test files
 test_*.html

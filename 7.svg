@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="240" viewBox="0 0 600 240">
+<text x="300.0" y="24" font-size="18" text-anchor="middle" font-family="Arial" font-weight="bold">Rainfall & Wind Summary (Kai Tak)</text>
+<text x="100" y="60" font-size="14" text-anchor="middle">Mean Wind (km/h)</text>
+<rect x="50" y="134.28571428571428" width="100" height="85.71428571428572" fill="#1f77b4" stroke="#0b3d66" stroke-width="1"/>
+<text x="100" y="240" font-size="12" text-anchor="middle">10.91 km/h</text>
+<text x="400" y="60" font-size="14" text-anchor="middle">Total Rainfall (mm)</text>
+<rect x="350" y="110.90909090909092" width="100" height="109.09090909090908" fill="#ff7f0e" stroke="#8a3e00" stroke-width="1"/>
+<text x="400" y="240" font-size="12" text-anchor="middle">32802 mm</text>
+</svg>

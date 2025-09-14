@@ -84,6 +84,27 @@ If you want, I can:
 - add a small `Makefile` or `tasks.json` to simplify running each demo,
 - improve `scraping_utils` to return structured records and add unit tests.
 
+Rainfall & Wind (Kai Tak) — added scripts
+---------------------------------------
+This repository now includes scripts to fetch and process Hong Kong Observatory (HKO) rainfall
+and wind data for the Kai Tak station and to generate simple visualizations.
+
+To regenerate the processed CSVs and plots:
+
+```bash
+source .venv/bin/activate
+# Fetch and process Kai Tak wind data (writes kaitak_wind_2010_2025.csv)
+PYTHONPATH=. .venv/bin/python scripts/fetch_kaitak_wind.py
+
+# Fetch and process Kai Tak rainfall data and regenerate summary SVG (writes rainfall_processed.csv and 7.svg)
+PYTHONPATH=. .venv/bin/python scripts/fetch_daily_rainfall_kaitak.py
+
+# Create monthly aggregated charts (monthly_wind_rain.png and monthly_wind_rain.svg)
+.venv/bin/python scripts/make_monthly_wind_rain.py
+```
+
+The notebook `week02_notebook.ipynb` has been updated to prefer loading the generated CSVs and will display the plots inline if you run the final cells.
+
 License
 -------
 No license specified. If you plan to publish this project, consider adding a `LICENSE` file (e.g., MIT).
