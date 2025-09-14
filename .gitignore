@@ -55,10 +55,8 @@ coverage.xml
 .vscode/
 
 # dotenv
-.env
-.env.*
-
-# Allow example env file to be committed
+# Removed .env and .env.* so that a real .env can be tracked in the repository when requested.
+# Keep the example file allowed so maintainers can still provide a template.
 !.env.example
 
 # Jupyter Notebook
@@ -78,10 +76,6 @@ Thumbs.db
 # Data and generated files used by scripts
 crawled-page-*.html
 crawled-page-*.htm
-tides.csv
-plot_tides.py
-tides_csv.py
-tides_processed.csv
 multi_city_temp.py
 city-*.json
 
