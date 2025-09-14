@@ -55,8 +55,11 @@ coverage.xml
 .vscode/
 
 # dotenv
-# Removed .env and .env.* so that a real .env can be tracked in the repository when requested.
-# Keep the example file allowed so maintainers can still provide a template.
+# Keep local .env files ignored by default to avoid accidental commits of secrets.
+.env
+.env.*
+
+# Allow example env file to be committed
 !.env.example
 
 # Jupyter Notebook
@@ -73,19 +76,28 @@ Thumbs.db
 # Matplotlib cache
 .mpl_cache/
 
+
 # Data and generated files used by scripts
 crawled-page-*.html
 crawled-page-*.htm
 multi_city_temp.py
 city-*.json
 
-# SVG output (ignore general SVGs but allow project-generated summary SVGs)
+# Raw downloaded CSVs from HKO (ignore large raw station-block files)
+daily_SE_RF_ALL.csv
+daily_SE_WSPD_ALL.csv
+
+# SVG output: generally ignore generated SVGs but whitelisted summary files
 *.svg
 !7.svg
 !monthly_wind_rain.svg
 
 # Ignore personal test files
 test_*.html
+
+# Archive folder: keep archive tracked but ignore large tide artifacts by default
+# Uncomment the next line if you prefer not to include the archived tide files in git
+# archive/tides/
 
 # Allow README and source files to remain tracked
 
