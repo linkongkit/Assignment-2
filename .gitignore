@@ -58,6 +58,9 @@ coverage.xml
 .env
 .env.*
 
+# Allow example env file to be committed
+!.env.example
+
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -76,9 +79,16 @@ Thumbs.db
 crawled-page-*.html
 crawled-page-*.htm
 tides.csv
+plot_tides.py
+tides_csv.py
+tides_processed.csv
+multi_city_temp.py
+city-*.json
 
-# SVG output
+# SVG output (ignore general SVGs but allow project-generated summary SVGs)
 *.svg
+!7.svg
+!monthly_wind_rain.svg
 
 # Ignore personal test files
 test_*.html
