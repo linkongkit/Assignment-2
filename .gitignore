@@ -55,10 +55,7 @@ coverage.xml
 .vscode/
 
 # dotenv
-# Keep local .env files ignored by default to avoid accidental commits of secrets.
-.env
-.env.*
-
+# NOTE: .env lines removed per user request. Be careful: committing real .env files can expose secrets.
 # Allow example env file to be committed
 !.env.example
 
