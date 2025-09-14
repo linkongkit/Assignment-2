@@ -78,10 +78,6 @@ Thumbs.db
 # Data and generated files used by scripts
 crawled-page-*.html
 crawled-page-*.htm
-tides.csv
-plot_tides.py
-tides_csv.py
-tides_processed.csv
 multi_city_temp.py
 city-*.json
 

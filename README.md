@@ -1,14 +1,12 @@
-# Tides & Temperature Scraping + Visualization (Assignment 2)
+# Scraping & Visualization (Assignment 2)
 
-This repository contains utilities and example scripts for crawling, parsing and visualizing climate and tidal data for a short course project. The code demonstrates simple web scraping (with local caching), parsing HTML/JSON responses, converting scraped tide tables into CSV, and plotting results using Matplotlib. There are also small SVG drawing experiments.
+This repository contains utilities and example scripts for crawling, parsing and visualizing climate and water-level data for a short course project. The code demonstrates simple web scraping (with local caching), parsing HTML/JSON responses, converting scraped tables into CSV, and plotting results using Matplotlib. There are also small SVG drawing experiments.
 
 Contents
 --------
 - `scraping_utils.py` – helper functions: `get_url` (fetch + local cache) and `parse` (HTML or JSON).
-- `plot_tides.py` – example script that scrapes a tide table page, extracts times/heights and plots them with Matplotlib.
-- `tides_csv.py` – similar logic to `plot_tides.py` but writes parsed tide records to `tides.csv`.
 - `multi_city_temp.py` – example that loads multiple city climate JSON pages and prints simple data from each.
-- `draw_svg.py`, `geometric-shapes.svg`, `irregular-polygon.svg`, `tide-chart.svg` – small drawing examples using `drawsvg` and shipped SVGs.
+- `draw_svg.py`, `geometric-shapes.svg`, `irregular-polygon.svg` – small drawing examples using `drawsvg` and shipped SVGs.
 - `city-1.json`, `city-2.json`, `city-3.json` – example JSON outputs for the multi-city climate parsing demo.
 - `crawled-page-2023.html`, `test_page.html` – saved HTML pages used by the scraping examples.
 - `requirements.txt` – Python packages required.
@@ -23,17 +21,17 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-2. Create a `.env` file at the repository root with the environment variables used by the scripts. Example `.env` values used by `plot_tides.py` / `tides_csv.py`:
+2. Create a `.env` file at the repository root with the environment variables used by the scripts. Example `.env` values used by the data scripts:
 
 ```ini
-# Assignment 2 — Scraping & Visualisation (tides, rainfall, wind)
+# Assignment 2 — Scraping & Visualisation (rainfall, wind)
 
-This repository started as a set of small scraping and plotting examples for tides and climate data. It now includes additional scripts to fetch, parse and visualise Hong Kong Observatory (HKO) rainfall and wind data for the Kai Tak station.
+This repository started as a set of small scraping and plotting examples for climate and water-level data. It now includes additional scripts to fetch, parse and visualise Hong Kong Observatory (HKO) rainfall and wind data for the Kai Tak station.
 
 Main contents
 -------------
 - `scraping_utils.py` — helper functions: `get_url(url, filename)` (fetch + cache) and `parse(page, mode)` (HTML or JSON parsing helpers).
-- `plot_tides.py`, `tides_csv.py` — original tide scraping and CSV examples.
+- (archived water-level examples removed)
 - `multi_city_temp.py` — small multi-city JSON demo.
 - `scripts/` — new scripts for the HKO data processing and plotting (see below).
 - `week02_notebook.ipynb` — notebook updated to prefer locally generated CSVs and to display the generated plots inline.
