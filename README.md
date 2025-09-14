@@ -26,89 +26,99 @@ pip install -r requirements.txt
 2. Create a `.env` file at the repository root with the environment variables used by the scripts. Example `.env` values used by `plot_tides.py` / `tides_csv.py`:
 
 ```ini
-URL=https://example.com/tide-table
-YEAR=2023
-FILENAME=crawled-page-{year}.html
-ROW_XPATH=//table[@id="tide-table"]/tbody/tr
-COL_XPATH=./td
-# For multi_city_temp.py
-MULTICITY_URL=https://example.com/api/city/{city_id}
-```
+# Assignment 2 — Scraping & Visualisation (tides, rainfall, wind)
 
-How the main scripts work
--------------------------
-- `scraping_utils.get_url(url, filename)` fetches a URL and saves the response to `filename` if it does not already exist; otherwise it reads the local file. This is convenient for debugging and avoiding repeated network calls.
-- `scraping_utils.parse(page, mode)` returns an `lxml` HTML tree when `mode=='html'` or a parsed JSON object when `mode=='json'`.
-- `plot_tides.py` (example): uses `ROW_XPATH`/`COL_XPATH` to locate tide rows and columns, extracts date/time pairs and tide heights, then plots a time-series using Matplotlib.
-- `tides_csv.py`: collects the same parsed records and appends them into a local `tides.csv` file with the format `YYYY-MM-DD HH:MM,value`.
-- `multi_city_temp.py`: reads multiple JSON endpoints defined by `MULTICITY_URL` and prints some climate data keys for each city.
+This repository started as a set of small scraping and plotting examples for tides and climate data. It now includes additional scripts to fetch, parse and visualise Hong Kong Observatory (HKO) rainfall and wind data for the Kai Tak station.
 
-Running examples
-----------------
-- Plot tides (opens a Matplotlib window):
+Main contents
+-------------
+- `scraping_utils.py` — helper functions: `get_url(url, filename)` (fetch + cache) and `parse(page, mode)` (HTML or JSON parsing helpers).
+- `plot_tides.py`, `tides_csv.py` — original tide scraping and CSV examples.
+- `multi_city_temp.py` — small multi-city JSON demo.
+- `scripts/` — new scripts for the HKO data processing and plotting (see below).
+- `week02_notebook.ipynb` — notebook updated to prefer locally generated CSVs and to display the generated plots inline.
+
+New HKO rainfall & wind scripts (Kai Tak)
+----------------------------------------
+These scripts fetch the HKO station-block CSVs (the HKO files are organised as blocks per station) and produce processed CSVs and plots for the Kai Tak station:
+
+- `scripts/fetch_kaitak_wind.py` — fetches the HKO wind CSV and writes `kaitak_wind_{START}_{END}.csv` and a PNG plot (`kaitak_wind_{START}_{END}.png`).
+- `scripts/fetch_daily_rainfall_kaitak.py` — parses the HKO rainfall CSV station block for Kai Tak and writes `rainfall_processed.csv` (daily rows: `datetime,rainfall_mm`), then regenerates `7.svg`.
+- `scripts/make_7_svg.py` — generates a simple summary SVG `7.svg` showing mean wind and total rainfall.
+- `scripts/make_monthly_wind_rain.py` — aggregates monthly rainfall totals and monthly mean wind and writes `monthly_wind_rain.png` and `monthly_wind_rain.svg` (bar + line dual-axis chart).
+- `scripts/test_fetch_kaitak_wind.py` — pytest unit test for the wind parser.
+- `scripts/notebook_append_cells.py` — helper used to append display cells to the notebook (used during development).
+
+Environment variables
+---------------------
+Create a `.env` (gitignored) at the repository root with the following variables (examples included in `.env.example`):
+
+- `RAINFALL_URL` — HKO rainfall CSV endpoint (default used in examples: `https://data.weather.gov.hk/weatherAPI/cis/csvfile/SE/ALL/daily_SE_RF_ALL.csv`)
+- `WIND_URL` — HKO wind CSV endpoint (default used in examples: `https://data.weather.gov.hk/cis/csvfile/SE/ALL/daily_SE_WSPD_ALL.csv`)
+- `RAINFALL_STATION_NAME` — station substring to filter for rainfall (default `Kaitak`)
+- `WIND_STATION_NAME` — station substring for wind (default `KaiTak`)
+- `START_YEAR`, `END_YEAR` — year bounds for filtering (defaults: `2010` and `2025`)
+
+Quick setup
+-----------
+1. Create and activate a virtual environment (macOS / zsh):
 
 ```bash
+python3 -m venv .venv
 source .venv/bin/activate
-python plot_tides.py
+pip install -r requirements.txt
 ```
 
-- Generate `tides.csv` from the scraped page:
+2. Create a `.env` in the repo root (or edit `.env.example`) with the keys above.
+
+How to regenerate the processed data and plots
+---------------------------------------------
+Run these commands from the project root (example with the venv python):
 
 ```bash
-python tides_csv.py
-```
-
-- Run the multi-city climate demo:
-
-```bash
-python multi_city_temp.py
-```
-
-Dependencies
-------------
-Dependencies are listed in `requirements.txt`. The main ones are:
-- `requests` — HTTP client
-- `lxml` — HTML parsing
-- `python-dotenv` — load `.env` variables
-- `drawsvg` — optional SVG drawing examples
-- `matplotlib` — plotting
-
-Notes, assumptions, and next steps
----------------------------------
-- The scripts expect the caller to provide correct XPath expressions and working URLs via environment variables. Example pages are included to allow offline testing.
-- CSV writing in `tides_csv.py` appends to `tides.csv`; if you want a fresh file, remove the old file first.
-- Error handling is minimal — consider adding robust validation for missing/invalid data, network timeouts, and CSV header handling for production use.
-
-If you want, I can:
-- add a minimal `requirements.txt` pinning exact versions,
-- add a small `Makefile` or `tasks.json` to simplify running each demo,
-- improve `scraping_utils` to return structured records and add unit tests.
-
-Rainfall & Wind (Kai Tak) — added scripts
----------------------------------------
-This repository now includes scripts to fetch and process Hong Kong Observatory (HKO) rainfall
-and wind data for the Kai Tak station and to generate simple visualizations.
-
-To regenerate the processed CSVs and plots:
-
-```bash
-source .venv/bin/activate
-# Fetch and process Kai Tak wind data (writes kaitak_wind_2010_2025.csv)
+# Fetch and process wind data for Kai Tak
 PYTHONPATH=. .venv/bin/python scripts/fetch_kaitak_wind.py
 
-# Fetch and process Kai Tak rainfall data and regenerate summary SVG (writes rainfall_processed.csv and 7.svg)
+# Fetch and process rainfall for Kai Tak and regenerate 7.svg
 PYTHONPATH=. .venv/bin/python scripts/fetch_daily_rainfall_kaitak.py
 
 # Create monthly aggregated charts (monthly_wind_rain.png and monthly_wind_rain.svg)
 .venv/bin/python scripts/make_monthly_wind_rain.py
 ```
 
-The notebook `week02_notebook.ipynb` has been updated to prefer loading the generated CSVs and will display the plots inline if you run the final cells.
+Files produced by the scripts
+----------------------------
+- `kaitak_wind_{START}_{END}.csv` — daily mean wind for the Kai Tak station.
+- `kaitak_wind_{START}_{END}.png` — simple time-series plot of daily mean wind.
+- `rainfall_processed.csv` — daily rainfall for Kai Tak in `datetime,rainfall_mm` format.
+- `7.svg` — simple summary SVG (mean wind and total rainfall).
+- `monthly_wind_rain.png`, `monthly_wind_rain.svg` — monthly aggregated chart (rainfall bars, wind line).
 
-License
+Notebook
+--------
+`week02_notebook.ipynb` has been updated to prefer loading the generated `kaitak_wind_...csv` and `rainfall_processed.csv` if they are present. The notebook also includes cells that display `monthly_wind_rain.svg` and `7.svg` inline (run the final notebook cells to render them).
+
+Version control notes
+---------------------
+- Generated assets (the two SVGs `7.svg` and `monthly_wind_rain.svg`, the monthly PNG and selected CSVs) have been added to the `remove-lecturer-notes` branch. If you prefer not to track generated files, remove them and add patterns to `.gitignore`.
+
+Testing
 -------
-No license specified. If you plan to publish this project, consider adding a `LICENSE` file (e.g., MIT).
+- `pytest` is used for the small parser test (`scripts/test_fetch_kaitak_wind.py`). Install pytest in your venv and run:
 
-Author / Context
-----------------
-Course assignment: SD5913 Creative Programming for Designers and Artists — Assignment 2.
+```bash
+.venv/bin/python -m pytest scripts/test_fetch_kaitak_wind.py
+```
+
+Security & reproducibility notes
+--------------------------------
+- The scripts fetch remote CSVs from HKO — network access is required. The helper `scraping_utils.get_url` caches downloads locally when used.
+- Be mindful of large data files if you choose to track raw downloads in git; they increase repository size.
+
+If you want help
+---------------
+- I can change the visual design (colours, annotations), produce higher-resolution PNGs or export interactive plots, or remove generated files from git and add a small `Makefile` to automate data regeneration.
+
+Course context
+--------------
+Assignment for SD5913 Creative Programming for Designers and Artists — Assignment 2.
